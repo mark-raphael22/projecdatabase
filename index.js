@@ -3,6 +3,8 @@ const express = require("express")
 const app = express()
 const port = 4020
 const mongoose = require("mongoose")
+const notFound=require("./middleware/notfoundroute")
+const errorHandler=require("./middleware/errorHandler")
 
 const taskRouter=require("./routes/taskRouter");
 mongoose.set("strictQuery", true);
@@ -12,11 +14,10 @@ app.use(express.json())
 
 //routes
 app.use("/api/v1/tasks",taskRouter)
+app.use(errorHandler)
 
 //error route
-app.use((req,res)=>{
-res.status(404).json({msg: "not found"})
-})
+app.use(notFound);
 
 //db 
 const startServer = async()=>{
